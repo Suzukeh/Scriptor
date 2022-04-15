@@ -61,5 +61,4 @@ async def script(ctx, *, arg):
 
 
 token = getenv('DISCORD_BOT_TOKEN')
-token = "OTY0NTQyNzI0NjI5OTkxNDk1.YlmKaQ.GVFmKTgbQR5vRknoQVKp6ZMSLuI"
 bot.run(token)
