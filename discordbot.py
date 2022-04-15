@@ -1,9 +1,11 @@
+import discord
 from discord.ext import commands
 from os import getenv
 import traceback
 import re
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix="$", case_insensitive=True,
+                   activity=discord.Game("Type $script to convert!"))
 
 Sclist = [("A", "𝓐"), ("B", "𝓑"), ("C", "𝓒"), ("D", "𝓓"), ("E", "𝓔"), ("F", "𝓕"), ("G", "𝓖"), ("H", "𝓗"), ("I", "𝓘"), ("J", "𝓙"), ("K", "𝓚"), ("L", "𝓛"), ("M", "𝓜"), ("N", "𝓝"), ("O", "𝓞"), ("P", "𝓟"), ("Q", "𝓠"), ("R", "𝓡"), ("S", "𝓢"), ("T", "𝓣"), ("U", "𝓤"), ("V", "𝓥"), ("W", "𝓦"), ("X", "𝓧"), ("Y", "𝓨"), ("Z", "𝓩"),
           ("a", "𝓪"), ("b", "𝓫"), ("c", "𝓬"), ("d", "𝓭"), ("e", "𝓮"), ("f", "𝓯"), ("g", "𝓰"), ("h", "𝓱"), ("i", "𝓲"), ("j", "𝓳"), ("k", "𝓴"), ("l", "𝓵"), ("m", "𝓶"), ("n", "𝓷"), ("o", "𝓸"), ("p", "𝓹"), ("q", "𝓺"), ("r", "𝓻"), ("s", "𝓼"), ("t", "𝓽"), ("u", "𝓾"), ("v", "𝓿"), ("w", "𝔀"), ("x", "𝔁"), ("y", "𝔂"), ("z", "𝔃")]
@@ -37,9 +39,9 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:
         return
-    if re.match(r'!', message.content):
+    if (re.match(r'$', message.content, flags=re.IGNORECASE) is not None):
         return
-    sMNG = re.search(r'my new gear\i', message.content)
+    sMNG = re.search(r'my new gear', message.content, flags=re.IGNORECASE)
     if (sMNG is not None):
         for i in UnicodeEmoji:
             await message.add_reaction(i)
@@ -47,15 +49,17 @@ async def on_message(message):
 
 @bot.command()
 async def ping(ctx):
-    await ctx.send('pong')
+    await ctx.reply('pong')
 
 
 @bot.command(name="script")
-async def script(ctx, arg):
+async def script(ctx, *, arg):
     if ctx.author.bot:
         return
     re_arg = screp(arg)
-    await ctx.send(re_arg)
+    await ctx.reply(re_arg)
+
 
 token = getenv('DISCORD_BOT_TOKEN')
+token = "OTY0NTQyNzI0NjI5OTkxNDk1.YlmKaQ.GVFmKTgbQR5vRknoQVKp6ZMSLuI"
 bot.run(token)
